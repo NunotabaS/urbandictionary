@@ -4,6 +4,7 @@ from nltk.stem import porter # use the porter stemmer here
 def wordmodify(word):
     # fix multi-repeats
     return word
+    #return re.sub(r"[^a-zA-Z0-9]", "", word)
 
 def getdict(filename):
     with open(filename, 'r') as f:
@@ -29,6 +30,10 @@ def getstemmap(wdict):
 
 if __name__ == '__main__':
     # params [urban dictionary file] [onlineslang dictionary file] [match mode]
+    if len(sys.argv) < 3:
+        print "findmatch [urban dictionary file] [onlineslang dictionary file] [match mode]"
+        exit(1)
+    
     if(len(sys.argv) < 4 or sys.argv[3] != 'stem'):
         udset, osdset = set(getdict(sys.argv[1])), set(getdict(sys.argv[2]))
         for word in udset.intersection(osdset):

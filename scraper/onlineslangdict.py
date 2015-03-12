@@ -6,7 +6,7 @@ import time
 import sys
 
 def fetch_osd_page(listname = '0-a'):
-    request = urllib2.Request('http://onlineslangdictionary.com/word-list/' + listname + '/?show-variants')
+    request = urllib2.Request('http://onlineslangdictionary.com/word-list/' + listname + '/')
     request.add_header('Accept-encoding', 'gzip')
     response = urllib2.urlopen(request)
     data = None
