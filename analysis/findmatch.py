@@ -37,7 +37,7 @@ if __name__ == '__main__':
     if(len(sys.argv) < 4 or sys.argv[3] != 'stem'):
         udset, osdset = set(getdict(sys.argv[1])), set(getdict(sys.argv[2]))
         for word in udset.intersection(osdset):
-            print word
+            print word.encode('utf8')
     else:
         stemmap = getstemmap(getdict(sys.argv[1]))
         st_udset, st_osdset = set(getstem(getdict(sys.argv[1]))), set(getstem(getdict(sys.argv[2])))
