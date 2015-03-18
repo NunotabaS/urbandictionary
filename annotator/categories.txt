@@ -1,0 +1,7 @@
+abbr : acronym or abbreviation
+slang : slang term (proper word or phrase used differently)
+ref : reference to a name bearing connotations
+pname : simply a name with no reference connotations
+common : common usage
+nodef : not a definition
+noise : bad data like single usages etc.
