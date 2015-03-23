@@ -20,11 +20,16 @@ def getdefs(filename):
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print "extractdefinitions [defns file] [word list] [word"
+        print "extractdefinitions [defns file] [word list] [word limit] [anti-list]"
         exit(1)
     
-    if(len(sys.argv) < 4 or sys.argv[3] != 'stem'):
-        wlset =  set(getdict(sys.argv[2], int(sys.argv[3]) if len(sys.argv) > 3 else None))
+    if(len(sys.argv) >= 3):
+        wlset =  set(getdict(sys.argv[2], int(sys.argv[3]) if len(sys.argv) > 3 and sys.argv[3].lower() != 'none' else None))
         for defn in getdefs(sys.argv[1]):
-            if defn[0].strip().lower() in wlset:
-                print "|||".join(defn).encode("utf8")
+            isAntilist = True if len(sys.argv) > 4 and sys.argv[4] == 'anti' else False
+            if not isAntilist:
+                if defn[0].strip().lower() in wlset:
+                    print "|||".join(defn).encode("utf8")
+            else:
+                if not defn[0].strip().lower() in wlset:
+                    print "|||".join(defn).encode("utf8")
