@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+import sys
+
+correct, incorrect = 0, 0
+with open(sys.argv[1], 'r') as f:
+  for line in sys.stdin:
+    label, word, defn, example, voting = line.strip().split("|||")
+    rlabel, rword, rdefn, rexample, rvoting = f.readline().strip().split("|||")
+    if label == rlabel:
+      correct += 1
+    else:
+      incorrect += 1
+      
+print "Correct: %i | Incorrect : %i | Accuracy: %f" % (correct, incorrect, float(correct) / (correct + incorrect))
