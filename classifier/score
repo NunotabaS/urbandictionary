@@ -1,14 +1,26 @@
 #!/usr/bin/env python
 import sys
 
-correct, incorrect = 0, 0
+tp, fp, tn, fn = 0, 0, 0, 0
 with open(sys.argv[1], 'r') as f:
   for line in sys.stdin:
     label, word, defn, example, voting = line.strip().split("|||")
     rlabel, rword, rdefn, rexample, rvoting = f.readline().strip().split("|||")
-    if label == rlabel:
-      correct += 1
+    gold = 1 if rlabel == 'n' else -1
+    system = 1 if label == 'n' else -1
+    if gold < 0:
+      if system < 0:
+        tn += 1
+      else:
+        fn += 1
     else:
-      incorrect += 1
+      if system > 0:
+        tp += 1
+      else:
+        fp += 1
+
+precision = float(tp) / (tp + fp)
+recall = float(tp) / (fn + tp)
+fscore = 2 * (precision * recall) / (precision + recall)
       
-print "Correct: %i | Incorrect : %i | Accuracy: %f" % (correct, incorrect, float(correct) / (correct + incorrect))
+print "Precision: %f | Recall : %f | F1-Score: %f" % (precision, recall, fscore)
