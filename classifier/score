@@ -12,12 +12,12 @@ with open(sys.argv[1], 'r') as f:
       if system < 0:
         tn += 1
       else:
-        fn += 1
+        fp += 1
     else:
       if system > 0:
         tp += 1
       else:
-        fp += 1
+        fn += 1
 
 precision = float(tp) / (tp + fp)
 recall = float(tp) / (fn + tp)
