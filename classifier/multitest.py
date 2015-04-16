@@ -8,23 +8,32 @@ FEATURE_CUTOFF = 0
 USE_STEM = False
 
 porterstemmer = porter.PorterStemmer()
+
+names = set(line.strip().lower() for line in open('data/names.txt'))
+
+
 def split_words(sent):
   return [porterstemmer.stem(word.lower()) if USE_STEM else word.lower() for word in re.split(r"[^a-zA-Z0-9-]", sent) if word.strip() != ""]
 
 def bigrams(words):
   return [(words[i], words[i+1]) for i in xrange(0,len(words) - 1)]
 
-def generate_features(definition, votes):
+def generate_features(definition, votes, word):
   words = split_words(definition)
   bigram_words = bigrams(words)
   upvotes, downvotes = tuple(votes.split(',')) 
+  
   upvotes = int(re.sub(r"[^0-9-]","",upvotes)) if upvotes.strip() != "" else 0
   downvotes = int(downvotes) if downvotes.strip() != "" else 0
+  
   ratio = float(upvotes) / (upvotes + downvotes) if (upvotes + downvotes) > 0 else 0
+  
+  isName = 1 if any(True for w in word.split() if w.lower() in names) else 0
+  
   #feat = [ratio, 1 - ratio, upvotes, downvotes]# 1 if definition.strip()[-1] == "." else 0]
-  feat = []
-  for w in FEATURES_VECTOR_LABEL:
-    feat.append(1 if any(w == k for k in words) else 0) # + (1 if any(w == k for k in bigram_words)) 
+  feat = [ratio, isName]
+  #for w in FEATURES_VECTOR_LABEL:
+  #  feat.append(1 if any(w == k for k in words) else 0) # + (1 if any(w == k for k in bigram_words)) 
     #feat.append(sum(1 if w == k else 0 for k in words) + sum(1 if w==k else 0 for k in bigram_words))
   return feat
 
@@ -47,7 +56,7 @@ for w in WORDS:
     
 
 train = [tuple(line.strip().split('|||')) for line in open(sys.argv[1])]
-training_pairs  = [generate_features(tup[2], tup[4]) for tup in train]
+training_pairs  = [generate_features(tup[2], tup[4], tup[1]) for tup in train]
 training_answers  = [1 if tup[0] == "g" else -1 for tup in train]
 
 DATA_LENGTH = len(train)
