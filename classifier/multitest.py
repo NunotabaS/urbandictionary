@@ -30,10 +30,9 @@ def generate_features(definition, votes, word):
   
   isName = 1 if any(True for w in word.split() if w.lower() in names) else 0
   
-  #feat = [ratio, 1 - ratio, upvotes, downvotes]# 1 if definition.strip()[-1] == "." else 0]
   feat = [ratio, isName]
-  #for w in FEATURES_VECTOR_LABEL:
-  #  feat.append(1 if any(w == k for k in words) else 0) # + (1 if any(w == k for k in bigram_words)) 
+  for w in FEATURES_VECTOR_LABEL:
+    feat.append(1 if any(w == k for k in words) else 0) # + (1 if any(w == k for k in bigram_words)) 
     #feat.append(sum(1 if w == k else 0 for k in words) + sum(1 if w==k else 0 for k in bigram_words))
   return feat
 
@@ -89,7 +88,7 @@ for r in xrange(0, 5):
         fp += 1
       else:
         tn += 1
-  print (tp, fp, tn, fn)
+  print "(TP %i, TN %i, FP %i, FN %i)" % (tp, tn, fp, fn)
   precision, recall = float(tp) / (tp + fp), float(tp) / (fn + tp)
   print "Current round precision: %f, Recall: %f" % (precision, recall)
   
@@ -98,7 +97,8 @@ for r in xrange(0, 5):
   TN += tn
   FN += fn
   
-precision, recall = float(tp) / (tp + fp), float(tp) / (fn + tp)
+precision, recall = float(TP) / (TP + FP), float(TP) / (FN + TP)
+print "(TP %i, TN %i, FP %i, FN %i)" % (TP, TN, FP, FN)
 fscore = 2 * (precision * recall) / (precision + recall)
 print "Precision: %f, Recall: %f, FScore: %f" % (precision, recall, fscore)
 

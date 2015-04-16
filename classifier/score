@@ -22,5 +22,6 @@ with open(sys.argv[1], 'r') as f:
 precision = float(tp) / (tp + fp)
 recall = float(tp) / (fn + tp)
 fscore = 2 * (precision * recall) / (precision + recall)
-      
+
+print "(TP %i, TN %i, FP %i, FN %i)" % (tp, tn, fp, fn)
 print "Precision: %f | Recall : %f | F1-Score: %f" % (precision, recall, fscore)
